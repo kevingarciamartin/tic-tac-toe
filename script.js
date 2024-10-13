@@ -6,7 +6,7 @@ const board = (() => {
   for (let i = 0; i < rows; i++) {
     board[i] = [];
     for (let j = 0; j < columns; j++) {
-      board[i].push(Cell());
+      board[i].push(Cell(i, j));
     }
   }
 
@@ -43,7 +43,7 @@ const board = (() => {
  ** 2: Player 2's marker
  */
 
-function Cell() {
+function Cell(row, column) {
   let value = 0;
 
   const placeMarker = (player) => {
@@ -53,6 +53,8 @@ function Cell() {
   const getValue = () => value;
 
   return {
+    row,
+    column,
     placeMarker,
     getValue,
   };
