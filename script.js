@@ -10,6 +10,8 @@ const board = (() => {
     }
   }
 
+  const getRows = () => rows;
+  const getColumns = () => columns;
   const getBoard = () => board;
 
   const placeMarker = (row, column, player) => {
@@ -30,6 +32,8 @@ const board = (() => {
   };
 
   return {
+    getRows,
+    getColumns,
     getBoard,
     placeMarker,
     printBoard,
@@ -105,7 +109,42 @@ function GameController(
       return;
     }
 
-    // Check for winner
+    const isWin = () => {
+      const isAllEqual = (arr) => arr.every((val) => val === arr[0]);
+
+      // Check horizontal
+      if (isAllEqual(board.getBoard()[row].map((cell) => cell.getValue())))
+        return true;
+
+      // Check vertical
+      const columnArray = [];
+      for (let i = 0; i < board.getRows(); i++) {
+        columnArray.push(board.getBoard()[i][column].getValue());
+      }
+      if (isAllEqual(columnArray)) return true;
+
+      // Check diagonal
+      if (
+        (row === 0 && (column === 0 || column === 2)) ||
+        (row === 1 && column === 1) ||
+        (row === 2 && (column === 0 || column === 2))
+      ) {
+        const diagonalArray1 = [];
+        const diagonalArray2 = [];
+
+        for (let i = 0; i < board.getRows(); i++) {
+          diagonalArray1.push(board.getBoard()[i][i].getValue());
+          diagonalArray2.push(board.getBoard()[i][2 - i].getValue());
+        }
+
+        if (isAllEqual(diagonalArray1)) return true;
+        if (isAllEqual(diagonalArray2)) return true;
+      }
+
+      return false;
+    };
+
+    isWin();
 
     switchPlayerTurn();
     printNewRound();
