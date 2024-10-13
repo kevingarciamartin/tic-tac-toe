@@ -1,4 +1,4 @@
-function Gameboard() {
+const board = (() => {
   const rows = 3;
   const columns = 3;
   const board = [];
@@ -34,7 +34,7 @@ function Gameboard() {
     placeMarker,
     printBoard,
   };
-}
+})();
 
 /*
  ** A Cell represents one "square" on the board and can have one of
@@ -62,8 +62,6 @@ function GameController(
   playerOneName = "Player One",
   playerTwoName = "Player Two"
 ) {
-  const board = Gameboard();
-
   const players = [
     {
       name: playerOneName,
@@ -94,11 +92,15 @@ function GameController(
       }'s marker into cell (${row},${column})...`
     );
 
-    const isAvailableCell = board.placeMarker(row, column, getActivePlayer().marker);
-    
+    const isAvailableCell = board.placeMarker(
+      row,
+      column,
+      getActivePlayer().marker
+    );
+
     if (!isAvailableCell) {
-        printNewRound();
-        return;
+      printNewRound();
+      return;
     }
 
     // Check for winner
