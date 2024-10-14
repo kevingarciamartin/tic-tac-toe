@@ -89,12 +89,12 @@ function GameController(
   };
   const getActivePlayer = () => activePlayer;
 
-  const printNewRound = () => {
+  const printNewTurn = () => {
     board.printBoard();
     console.log(`${getActivePlayer().name}'s turn.`);
   };
 
-  const playRound = (row, column) => {
+  const playTurn = (row, column) => {
     console.log(
       `Placing ${
         getActivePlayer().name
@@ -108,7 +108,7 @@ function GameController(
     );
 
     if (!isAvailableCell) {
-      printNewRound();
+      printNewTurn();
       return;
     }
 
@@ -152,8 +152,7 @@ function GameController(
       }
       if (diagonalArray.length === 0) {
         return false;
-      }
-      else if (isAllEqual(diagonalArray)) {
+      } else if (isAllEqual(diagonalArray)) {
         console.log("DIAGONAL");
         return true;
       }
@@ -178,13 +177,13 @@ function GameController(
     if (isTie()) console.log("It's a tie");
 
     switchPlayerTurn();
-    printNewRound();
+    printNewTurn();
   };
 
-  printNewRound();
+  printNewTurn();
 
   return {
-    playRound,
+    playTurn,
     getActivePlayer,
   };
 }
