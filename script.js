@@ -16,7 +16,7 @@ const board = (() => {
 
   const placeMarker = (row, column, player) => {
     const isAvailableCell =
-      board[row][column].getValue() === board[row][column].emptyCellValue;
+      board[row][column].getValue() === board[row][column].getEmptyCellValue();
 
     if (!isAvailableCell) return false;
 
@@ -172,7 +172,7 @@ function GameController(
         for (let j = 0; j < board.getColumns(); j++) {
           if (
             board.getBoard()[i][j].getValue() ===
-            board.getBoard()[i][j].emptyCellValue
+            board.getBoard()[i][j].getEmptyCellValue()
           )
             return false;
         }
