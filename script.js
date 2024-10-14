@@ -113,38 +113,62 @@ function GameController(
       const isAllEqual = (arr) => arr.every((val) => val === arr[0]);
 
       // Check horizontal
-      if (isAllEqual(board.getBoard()[row].map((cell) => cell.getValue())))
+      if (isAllEqual(board.getBoard()[row].map((cell) => cell.getValue()))) {
+        console.log("HORIZONTAL");
         return true;
+      }
 
       // Check vertical
       const columnArray = [];
       for (let i = 0; i < board.getRows(); i++) {
         columnArray.push(board.getBoard()[i][column].getValue());
       }
-      if (isAllEqual(columnArray)) return true;
+      if (isAllEqual(columnArray)) {
+        console.log("VERTICAL");
+        return true;
+      }
 
       // Check diagonal
+      const diagonalArray = [];
       if (
-        (row === 0 && (column === 0 || column === 2)) ||
+        (row === 0 && column === 0) ||
         (row === 1 && column === 1) ||
-        (row === 2 && (column === 0 || column === 2))
+        (row === 2 && column === 2)
       ) {
-        const diagonalArray1 = [];
-        const diagonalArray2 = [];
-
         for (let i = 0; i < board.getRows(); i++) {
-          diagonalArray1.push(board.getBoard()[i][i].getValue());
-          diagonalArray2.push(board.getBoard()[i][2 - i].getValue());
+          diagonalArray.push(board.getBoard()[i][i].getValue());
         }
-
-        if (isAllEqual(diagonalArray1)) return true;
-        if (isAllEqual(diagonalArray2)) return true;
+      } else if (
+        (row === 0 && column === 2) ||
+        (row === 1 && column === 1) ||
+        (row === 2 && column === 0)
+      ) {
+        for (let i = 0; i < board.getRows(); i++) {
+          diagonalArray.push(board.getBoard()[i][2 - i].getValue());
+        }
+      }
+      if (diagonalArray.length === 0) {
+        return false;
+      }
+      else if (isAllEqual(diagonalArray)) {
+        console.log("DIAGONAL");
+        return true;
       }
 
       return false;
     };
 
-    isWin();
+    const isTie = () => {
+      for (let i = 0; i < board.getRows(); i++) {
+        for (let j = 0; j < board.getColumns(); j++) {
+          if (board.getBoard()[i][j].getValue() === 0) return false;
+        }
+      }
+      return true;
+    };
+
+    if (isWin()) console.log(`${getActivePlayer().name} wins!`);
+    if (isTie()) console.log("It's a tie");
 
     switchPlayerTurn();
     printNewRound();
