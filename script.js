@@ -14,13 +14,19 @@ const board = (() => {
   const getColumns = () => columns;
   const getBoard = () => board;
 
-  const placeMarker = (row, column, player) => {
+  const resetBoard = () => {
+    for (let i = 0; i < rows; i++) {
+      board[i].forEach((cell) => cell.placeMarker(cell.getEmptyCellValue()));
+    }
+  };
+
+  const placeMarker = (row, column, marker) => {
     const isAvailableCell =
       board[row][column].getValue() === board[row][column].getEmptyCellValue();
 
     if (!isAvailableCell) return false;
 
-    board[row][column].placeMarker(player);
+    board[row][column].placeMarker(marker);
 
     return true;
   };
@@ -36,6 +42,7 @@ const board = (() => {
     getRows,
     getColumns,
     getBoard,
+    resetBoard,
     placeMarker,
     printBoard,
   };
@@ -47,8 +54,8 @@ function Cell(cellRow, cellColumn) {
   const emptyCellValue = "_";
   let value = emptyCellValue;
 
-  const placeMarker = (player) => {
-    value = player;
+  const placeMarker = (marker) => {
+    value = marker;
   };
 
   const getRow = () => row;
@@ -99,6 +106,7 @@ function GameController(
   const getActivePlayer = () => activePlayer;
 
   const printNewRound = () => {
+    console.log("--------------");
     console.log(`Round ${round}`);
     console.log("--------------");
   };
@@ -106,6 +114,14 @@ function GameController(
   const printNewTurn = () => {
     board.printBoard();
     console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const playRound = () => {
+    board.resetBoard();
+    increaseRound();
+    setPlayerTurn();
+    printNewRound();
+    printNewTurn();
   };
 
   const playTurn = (row, column) => {
@@ -194,10 +210,8 @@ function GameController(
     printNewTurn();
   };
 
-  printNewRound();
-  printNewTurn();
-
   return {
+    playRound,
     playTurn,
     getActivePlayer,
   };
