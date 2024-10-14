@@ -15,7 +15,8 @@ const board = (() => {
   const getBoard = () => board;
 
   const placeMarker = (row, column, player) => {
-    const isAvailableCell = board[row][column].getValue() === 0;
+    const isAvailableCell =
+      board[row][column].getValue() === board[row][column].emptyCellValue;
 
     if (!isAvailableCell) return false;
 
@@ -48,7 +49,8 @@ const board = (() => {
  */
 
 function Cell(row, column) {
-  let value = 0;
+  const emptyCellValue = "_";
+  let value = emptyCellValue;
 
   const placeMarker = (player) => {
     value = player;
@@ -59,6 +61,7 @@ function Cell(row, column) {
   return {
     row,
     column,
+    emptyCellValue,
     placeMarker,
     getValue,
   };
@@ -161,7 +164,11 @@ function GameController(
     const isTie = () => {
       for (let i = 0; i < board.getRows(); i++) {
         for (let j = 0; j < board.getColumns(); j++) {
-          if (board.getBoard()[i][j].getValue() === 0) return false;
+          if (
+            board.getBoard()[i][j].getValue() ===
+            board.getBoard()[i][j].emptyCellValue
+          )
+            return false;
         }
       }
       return true;
