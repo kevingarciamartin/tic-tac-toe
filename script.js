@@ -43,12 +43,14 @@ const board = (() => {
 
 /*
  ** A Cell represents one "square" on the board and can have one of
- ** 0: no marker is in the square,
- ** 1: Player 1's marker,
- ** 2: Player 2's marker
+ ** '_': no marker is in the square,
+ ** 'X': Player 1's marker,
+ ** 'O': Player 2's marker
  */
 
-function Cell(row, column) {
+function Cell(cellRow, cellColumn) {
+  const row = cellRow;
+  const column = cellColumn;
   const emptyCellValue = "_";
   let value = emptyCellValue;
 
@@ -56,13 +58,16 @@ function Cell(row, column) {
     value = player;
   };
 
+  const getRow = () => row;
+  const getColumn = () => column;
+  const getEmptyCellValue = () => emptyCellValue;
   const getValue = () => value;
 
   return {
-    row,
-    column,
-    emptyCellValue,
     placeMarker,
+    getRow,
+    getColumn,
+    getEmptyCellValue,
     getValue,
   };
 }
