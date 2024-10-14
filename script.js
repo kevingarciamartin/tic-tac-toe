@@ -41,13 +41,6 @@ const board = (() => {
   };
 })();
 
-/*
- ** A Cell represents one "square" on the board and can have one of
- ** '_': no marker is in the square,
- ** 'X': Player 1's marker,
- ** 'O': Player 2's marker
- */
-
 function Cell(cellRow, cellColumn) {
   const row = cellRow;
   const column = cellColumn;
@@ -89,12 +82,26 @@ function GameController(
     },
   ];
 
+  let round = 0;
   let activePlayer = players[0];
+
+  const increaseRound = () => round++;
+  const resetRound = () => (round = 0);
+
+  const increasePlayerScore = (player) => player.points++;
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
+  const setPlayerTurn = () => {
+    activePlayer = round % 2 === 0 ? players[1] : players[0];
+  };
   const getActivePlayer = () => activePlayer;
+
+  const printNewRound = () => {
+    console.log(`Round ${round}`);
+    console.log("--------------");
+  };
 
   const printNewTurn = () => {
     board.printBoard();
@@ -187,6 +194,7 @@ function GameController(
     printNewTurn();
   };
 
+  printNewRound();
   printNewTurn();
 
   return {
