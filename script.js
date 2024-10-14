@@ -95,7 +95,10 @@ function GameController(
   const increaseRound = () => round++;
   const resetRound = () => (round = 0);
 
-  const increasePlayerScore = (player) => player.points++;
+  const increasePlayerPoints = (player) => player.points++;
+  const resetPlayerPoints = () => {
+    players.forEach((player) => (player.points = 0));
+  };
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
@@ -114,6 +117,11 @@ function GameController(
   const printNewTurn = () => {
     board.printBoard();
     console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const initGame = () => {
+    resetPlayerPoints();
+    resetRound();
   };
 
   const playRound = () => {
@@ -211,6 +219,7 @@ function GameController(
   };
 
   return {
+    initGame,
     playRound,
     playTurn,
     getActivePlayer,
