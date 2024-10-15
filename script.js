@@ -72,10 +72,7 @@ function Cell(cellRow, cellColumn) {
   };
 }
 
-function GameController(
-  playerOneName = "Player One",
-  playerTwoName = "Player Two"
-) {
+const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
   const players = [
     {
       name: playerOneName,
@@ -111,6 +108,9 @@ function GameController(
   const printNewRound = () => {
     console.log("--------------");
     console.log(`Round ${round}`);
+    console.log(
+      `${players[0].name} ${players[0].points}-${players[1].points} ${players[1].name}`
+    );
     console.log("--------------");
   };
 
@@ -130,6 +130,22 @@ function GameController(
     setPlayerTurn();
     printNewRound();
     printNewTurn();
+
+    let row, column;
+    do {
+      row = prompt("Select a row from 0-2.");
+      column = prompt("Select a column from 0-2.");
+
+      playTurn(row, column);
+    } while (!(isWin(row, column) || isTie()));
+    // for (let i = 0; i < board.getRows() * board.getColumns(); i++) {
+    //   row = prompt("Select a row from 0-2.");
+    //   column = prompt("Select a column from 0-2.");
+
+    //   playTurn(row, column);
+
+    //   if (isWin(row, column) || isTie()) break;
+    // }
   };
 
   const playTurn = (row, column) => {
@@ -150,73 +166,72 @@ function GameController(
       return;
     }
 
-    const isWin = () => {
-      const isAllEqual = (arr) => arr.every((val) => val === arr[0]);
-
-      // Check horizontal
-      if (isAllEqual(board.getBoard()[row].map((cell) => cell.getValue()))) {
-        console.log("HORIZONTAL");
-        return true;
-      }
-
-      // Check vertical
-      const columnArray = [];
-      for (let i = 0; i < board.getRows(); i++) {
-        columnArray.push(board.getBoard()[i][column].getValue());
-      }
-      if (isAllEqual(columnArray)) {
-        console.log("VERTICAL");
-        return true;
-      }
-
-      // Check diagonal
-      const diagonalArray = [];
-      if (
-        (row === 0 && column === 0) ||
-        (row === 1 && column === 1) ||
-        (row === 2 && column === 2)
-      ) {
-        for (let i = 0; i < board.getRows(); i++) {
-          diagonalArray.push(board.getBoard()[i][i].getValue());
-        }
-      } else if (
-        (row === 0 && column === 2) ||
-        (row === 1 && column === 1) ||
-        (row === 2 && column === 0)
-      ) {
-        for (let i = 0; i < board.getRows(); i++) {
-          diagonalArray.push(board.getBoard()[i][2 - i].getValue());
-        }
-      }
-      if (diagonalArray.length === 0) {
-        return false;
-      } else if (isAllEqual(diagonalArray)) {
-        console.log("DIAGONAL");
-        return true;
-      }
-
-      return false;
-    };
-
-    const isTie = () => {
-      for (let i = 0; i < board.getRows(); i++) {
-        for (let j = 0; j < board.getColumns(); j++) {
-          if (
-            board.getBoard()[i][j].getValue() ===
-            board.getBoard()[i][j].getEmptyCellValue()
-          )
-            return false;
-        }
-      }
-      return true;
-    };
-
-    if (isWin()) console.log(`${getActivePlayer().name} wins!`);
-    if (isTie()) console.log("It's a tie");
-
-    switchPlayerTurn();
-    printNewTurn();
+    if (isWin(row, column)) {
+      console.log(`${getActivePlayer().name.toUpperCase()} WINS!`);
+    } else if (isTie()) {
+      console.log("IT'S A TIE");
+    } else {
+      switchPlayerTurn();
+      printNewTurn();
+    }
   };
+
+  const isWin = (row, column) => {
+    const isAllEqual = (arr) => arr.every((val) => val === arr[0]);
+
+    // Check horizontal
+    if (isAllEqual(board.getBoard()[row].map((cell) => cell.getValue())))
+      return true;
+
+    // Check vertical
+    const columnArray = [];
+    for (let i = 0; i < board.getRows(); i++) {
+      columnArray.push(board.getBoard()[i][column].getValue());
+    }
+    if (isAllEqual(columnArray)) return true;
+
+    // Check diagonal
+    const diagonalArray = [];
+    if ((row == 0 && column == 0) || (row == 2 && column == 2)) {
+      for (let i = 0; i < board.getRows(); i++) {
+        diagonalArray.push(board.getBoard()[i][i].getValue());
+      }
+    } else if ((row == 0 && column == 2) || (row == 2 && column == 0)) {
+      for (let i = 0; i < board.getRows(); i++) {
+        diagonalArray.push(board.getBoard()[i][2 - i].getValue());
+      }
+    } else if (row == 1 && column == 1) {
+      diagonalArray[0] = [];
+      diagonalArray[1] = [];
+      for (let i = 0; i < board.getRows(); i++) {
+        diagonalArray[0].push(board.getBoard()[i][i].getValue());
+        diagonalArray[1].push(board.getBoard()[i][2 - i].getValue());
+      }
+    }
+    if (diagonalArray.length === 0) return false;
+    else if (diagonalArray.length === 2) {
+      diagonalArray.forEach((array) => {
+        if (isAllEqual(array)) return true;
+      });
+    } else if (isAllEqual(diagonalArray)) return true;
+
+    return false;
+  };
+
+  const isTie = () => {
+    for (let i = 0; i < board.getRows(); i++) {
+      for (let j = 0; j < board.getColumns(); j++) {
+        if (
+          board.getBoard()[i][j].getValue() ===
+          board.getBoard()[i][j].getEmptyCellValue()
+        )
+          return false;
+      }
+    }
+    return true;
+  };
+
+  initGame();
 
   return {
     initGame,
@@ -224,6 +239,4 @@ function GameController(
     playTurn,
     getActivePlayer,
   };
-}
-
-const game = GameController();
+})();
