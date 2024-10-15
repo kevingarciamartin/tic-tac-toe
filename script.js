@@ -240,3 +240,27 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     getActivePlayer,
   };
 })();
+
+const ui = (() => {
+  const uiInfo = document.querySelector("#info");
+  const uiBoard = document.querySelector("#board");
+
+  const updateScreen = () => {
+    uiBoard.textContent = "";
+
+    const currentBoard = board.getBoard();
+    const activePlayer = game.getActivePlayer();
+
+    uiInfo.textContent = `${activePlayer.name}'s turn...`;
+
+    currentBoard.forEach((row) => {
+      row.forEach((cell, index) => {
+        const cellButton = document.createElement("button");
+        cellButton.classList.add("cell");
+        cellButton.dataset.column = index;
+        cellButton.textContent = cell.getValue();
+        uiBoard.appendChild(cellButton);
+      });
+    });
+  };
+})();
