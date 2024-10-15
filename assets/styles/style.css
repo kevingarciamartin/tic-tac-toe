@@ -1,4 +1,13 @@
 body {
-    background-image: url('../img/chalkboard.jpg');
-    background-size: cover;
+  display: flex;
+  justify-content: center;
+
+  background-image: url("../img/chalkboard.jpg");
+  background-size: cover;
+  color: whitesmoke;
+  font-family: "Chalktastic";
+}
+
+header {
+  font-size: 2rem;
 }
