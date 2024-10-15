@@ -132,20 +132,29 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     printNewTurn();
 
     let row, column;
+    let roundWon = false;
+    let roundTied = false;
     do {
       row = prompt("Select a row from 0-2.");
       column = prompt("Select a column from 0-2.");
 
       playTurn(row, column);
-    } while (!(isWin(row, column) || isTie()));
-    // for (let i = 0; i < board.getRows() * board.getColumns(); i++) {
-    //   row = prompt("Select a row from 0-2.");
-    //   column = prompt("Select a column from 0-2.");
 
-    //   playTurn(row, column);
+      roundWon = isWin(row, column);
+      roundTied = isTie();
 
-    //   if (isWin(row, column) || isTie()) break;
-    // }
+      if (!(roundWon || roundTied)) {
+        switchPlayerTurn();
+        printNewTurn();
+      } else board.printBoard();
+    } while (!(roundWon || roundTied));
+
+    if (roundWon) {
+      console.log(`${getActivePlayer().name.toUpperCase()} WINS!`);
+      increasePlayerPoints(getActivePlayer());
+    } else if (roundTied) {
+      console.log("IT'S A TIE");
+    }
   };
 
   const playTurn = (row, column) => {
@@ -164,15 +173,6 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     if (!isAvailableCell) {
       printNewTurn();
       return;
-    }
-
-    if (isWin(row, column)) {
-      console.log(`${getActivePlayer().name.toUpperCase()} WINS!`);
-    } else if (isTie()) {
-      console.log("IT'S A TIE");
-    } else {
-      switchPlayerTurn();
-      printNewTurn();
     }
   };
 
