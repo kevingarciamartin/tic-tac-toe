@@ -31,20 +31,12 @@ const board = (() => {
     return true;
   };
 
-  const printBoard = () => {
-    const boardWithCellValues = board.map((row) =>
-      row.map((cell) => cell.getValue())
-    );
-    console.log(boardWithCellValues);
-  };
-
   return {
     getRows,
     getColumns,
     getBoard,
     resetBoard,
     placeMarker,
-    printBoard,
   };
 })();
 
@@ -107,20 +99,6 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
 
   const getPlayers = () => players;
 
-  const printNewRound = () => {
-    console.log("--------------");
-    console.log(`Round ${round}`);
-    console.log(
-      `${players[0].name} ${players[0].points}-${players[1].points} ${players[1].name}`
-    );
-    console.log("--------------");
-  };
-
-  const printNewTurn = () => {
-    board.printBoard();
-    console.log(`${getActivePlayer().name}'s turn.`);
-  };
-
   const initGame = () => {
     resetPlayerPoints();
     resetRound();
@@ -130,56 +108,16 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     board.resetBoard();
     increaseRound();
     setPlayerTurn();
-    printNewRound();
-    printNewTurn();
-  };
-
-  const playRound = (row, column) => {
-    board.resetBoard();
-    increaseRound();
-    setPlayerTurn();
-    printNewRound();
-    printNewTurn();
-
-    let roundWon = false;
-    let roundTied = false;
-    do {
-      playTurn(row, column);
-
-      roundWon = isWin(row, column);
-      roundTied = isTie();
-
-      if (!(roundWon || roundTied)) {
-        switchPlayerTurn();
-        printNewTurn();
-      } else board.printBoard();
-    } while (!(roundWon || roundTied));
-
-    if (roundWon) {
-      console.log(`${getActivePlayer().name.toUpperCase()} WINS!`);
-      increasePlayerPoints(getActivePlayer());
-    } else if (roundTied) {
-      console.log("IT'S A TIE");
-    }
   };
 
   const playTurn = (row, column) => {
-    console.log(
-      `Placing ${
-        getActivePlayer().name
-      }'s marker into cell (${row},${column})...`
-    );
-
     const isAvailableCell = board.placeMarker(
       row,
       column,
       getActivePlayer().marker
     );
 
-    if (!isAvailableCell) {
-      printNewTurn();
-      return;
-    }
+    if (!isAvailableCell) return;
 
     if (isWin(row, column)) {
       increasePlayerPoints(getActivePlayer());
@@ -249,7 +187,6 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
   return {
     initGame,
     initRound,
-    playRound,
     playTurn,
     setPlayerTurn,
     getActivePlayer,
