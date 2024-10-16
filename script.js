@@ -130,7 +130,7 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     setPlayerTurn();
     printNewRound();
     printNewTurn();
-  }
+  };
 
   const playRound = (row, column) => {
     board.resetBoard();
@@ -267,13 +267,14 @@ const ui = (() => {
 
     const uiInfo = document.createElement("section");
     const uiBoard = document.createElement("section");
-
-    uiBoard.id = "board";
+    const uiGameButtons = document.createElement("section");
 
     const currentBoard = board.getBoard();
     const activePlayer = game.getActivePlayer();
 
     uiInfo.textContent = `${activePlayer.name}'s turn...`;
+
+    uiBoard.id = "board";
 
     currentBoard.forEach((row) => {
       row.forEach((cell) => {
@@ -286,8 +287,16 @@ const ui = (() => {
       });
     });
 
+    uiGameButtons.id = "game-buttons";
+
+    const uiQuitButton = document.createElement("button");
+    uiQuitButton.classList.add("quit");
+    uiQuitButton.textContent = "Quit";
+    uiGameButtons.appendChild(uiQuitButton);
+
     uiMainContent.appendChild(uiInfo);
     uiMainContent.appendChild(uiBoard);
+    uiMainContent.appendChild(uiGameButtons);
   };
 
   uiMainContent.addEventListener("click", (event) => {
@@ -295,10 +304,11 @@ const ui = (() => {
       game.initGame();
       game.initRound();
       renderGame();
-    }
-    if (event.target.classList.contains("cell")) {
+    } else if (event.target.classList.contains("cell")) {
       game.playTurn(event.target.dataset.row, event.target.dataset.column);
       renderGame();
+    } else if (event.target.classList.contains('quit')) {
+      renderMainMenu();
     }
   });
 
