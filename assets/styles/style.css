@@ -19,6 +19,7 @@ main {
   #board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 
     height: 100%;
     aspect-ratio: 1 / 1;
