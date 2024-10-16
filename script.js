@@ -289,8 +289,8 @@ const ui = (() => {
 
     playerOneName.textContent = `${game.getPlayers()[0].name}`;
     playerOnePoints.textContent = `${game.getPlayers()[0].points}`;
-    turnInfoTitle.textContent = "Now Playing";
-    turnPlayer.textContent = `${activePlayer.name}: ${activePlayer.marker}`;
+    turnInfoTitle.textContent = "Now Playing:";
+    turnPlayer.textContent = `${activePlayer.name} (${activePlayer.marker})`;
     playerTwoName.textContent = `${game.getPlayers()[1].name}`;
     playerTwoPoints.textContent = `${game.getPlayers()[1].points}`;
 
