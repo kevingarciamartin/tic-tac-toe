@@ -30,6 +30,7 @@ p {
 }
 
 button, input:is([type="submit"], [type="button"], [type="checkbox"]) {
+    color: inherit;
     cursor: pointer;
     letter-spacing: inherit;
 }
