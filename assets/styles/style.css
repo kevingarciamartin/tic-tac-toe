@@ -12,6 +12,10 @@ body {
 header {
   font-size: unset;
   transition: font-size 500ms ease;
+
+  h1 {
+    font-weight: normal;
+  }
 }
 
 header:has(+ main button.play) {
