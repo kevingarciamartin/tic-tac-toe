@@ -232,11 +232,11 @@ const ui = (() => {
     const playerTwoName = document.createElement("div");
     const playerTwoPoints = document.createElement("div");
 
-    playerOneName.textContent = `${game.getPlayers()[0].name}`;
+    playerOneName.textContent = `${game.getPlayers()[0].name} (${game.getPlayers()[0].marker})`;
     playerOnePoints.textContent = `${game.getPlayers()[0].points}`;
     turnInfoTitle.textContent = "Now Playing:";
-    turnPlayer.textContent = `${activePlayer.name} (${activePlayer.marker})`;
-    playerTwoName.textContent = `${game.getPlayers()[1].name}`;
+    turnPlayer.textContent = `${activePlayer.name}`;
+    playerTwoName.textContent = `${game.getPlayers()[1].name} (${game.getPlayers()[1].marker})`;
     playerTwoPoints.textContent = `${game.getPlayers()[1].points}`;
 
     uiInfo.appendChild(playerOneInfo);
