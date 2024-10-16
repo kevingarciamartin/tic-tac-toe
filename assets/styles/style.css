@@ -5,7 +5,6 @@ body {
   flex-direction: column;
 
   background-image: url("../img/chalkboard.jpg");
-  background-size: cover;
   color: whitesmoke;
   font-family: "Chalktastic";
 }
