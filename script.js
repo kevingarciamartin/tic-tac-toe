@@ -124,20 +124,24 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     resetRound();
   };
 
-  const playRound = () => {
+  const initRound = () => {
+    board.resetBoard();
+    increaseRound();
+    setPlayerTurn();
+    printNewRound();
+    printNewTurn();
+  }
+
+  const playRound = (row, column) => {
     board.resetBoard();
     increaseRound();
     setPlayerTurn();
     printNewRound();
     printNewTurn();
 
-    let row, column;
     let roundWon = false;
     let roundTied = false;
     do {
-      row = prompt("Select a row from 0-2.");
-      column = prompt("Select a column from 0-2.");
-
       playTurn(row, column);
 
       roundWon = isWin(row, column);
@@ -174,6 +178,8 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
       printNewTurn();
       return;
     }
+
+    switchPlayerTurn();
   };
 
   const isWin = (row, column) => {
@@ -235,6 +241,7 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
 
   return {
     initGame,
+    initRound,
     playRound,
     playTurn,
     getActivePlayer,
@@ -242,11 +249,26 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
 })();
 
 const ui = (() => {
-  const uiInfo = document.querySelector("#info");
-  const uiBoard = document.querySelector("#board");
+  const uiMainContent = document.querySelector("main");
 
-  const updateScreen = () => {
-    uiBoard.textContent = "";
+  const renderMainMenu = () => {
+    uiMainContent.textContent = "";
+
+    const playButton = document.createElement("button");
+
+    playButton.classList.add("play");
+    playButton.textContent = "Play";
+
+    uiMainContent.appendChild(playButton);
+  };
+
+  const renderGame = () => {
+    uiMainContent.textContent = "";
+
+    const uiInfo = document.createElement("section");
+    const uiBoard = document.createElement("section");
+
+    uiBoard.id = "board";
 
     const currentBoard = board.getBoard();
     const activePlayer = game.getActivePlayer();
@@ -254,15 +276,31 @@ const ui = (() => {
     uiInfo.textContent = `${activePlayer.name}'s turn...`;
 
     currentBoard.forEach((row) => {
-      row.forEach((cell, index) => {
+      row.forEach((cell) => {
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
-        cellButton.dataset.column = index;
+        cellButton.dataset.row = cell.getRow();
+        cellButton.dataset.column = cell.getColumn();
         cellButton.textContent = cell.getValue();
         uiBoard.appendChild(cellButton);
       });
     });
+
+    uiMainContent.appendChild(uiInfo);
+    uiMainContent.appendChild(uiBoard);
   };
 
-  updateScreen();
+  uiMainContent.addEventListener("click", (event) => {
+    if (event.target.classList.contains("play")) {
+      game.initGame();
+      game.initRound();
+      renderGame();
+    }
+    if (event.target.classList.contains("cell")) {
+      game.playTurn(event.target.dataset.row, event.target.dataset.column);
+      renderGame();
+    }
+  });
+
+  renderMainMenu();
 })();
