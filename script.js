@@ -251,6 +251,7 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     initRound,
     playRound,
     playTurn,
+    setPlayerTurn,
     getActivePlayer,
     getPlayers,
     isWin,
@@ -326,9 +327,18 @@ const ui = (() => {
 
     uiGameButtons.id = "game-buttons";
 
+    const uiRestartRoundButton = document.createElement("button");
     const uiQuitButton = document.createElement("button");
-    uiQuitButton.classList.add("quit");
+    uiRestartRoundButton.classList.add("small-btn");
+    uiRestartRoundButton.textContent = "Restart Round";
+    uiRestartRoundButton.addEventListener('click', () => { 
+      board.resetBoard(); 
+      game.setPlayerTurn();
+      renderGame();
+    })
+    uiQuitButton.classList.add("quit", 'small-btn');
     uiQuitButton.textContent = "Quit";
+    uiGameButtons.appendChild(uiRestartRoundButton);
     uiGameButtons.appendChild(uiQuitButton);
 
     uiMainContent.appendChild(uiInfo);
@@ -351,10 +361,10 @@ const ui = (() => {
     modalButtons.classList.add("modal-buttons");
 
     modalPlayAgainButton.textContent = "Play Again";
-    modalPlayAgainButton.classList.add("quit");
+    modalPlayAgainButton.classList.add('small-btn');
 
     modalQuitButton.textContent = "Quit";
-    modalQuitButton.classList.add("quit");
+    modalQuitButton.classList.add("quit", 'small-btn');
 
     modal.appendChild(modalMessage);
     modal.appendChild(modalButtons);
