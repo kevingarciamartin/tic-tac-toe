@@ -16,19 +16,25 @@ header {
 main {
   width: min(30rem, 60vw);
 
+  button {
+    background-color: transparent;
+    border: 25px solid white;
+    border-image: url(../img/chalkbox.webp) 30;
+    font-size: clamp(1rem, 8vw + 0.5rem, 5rem);
+  }
+
+  &:has(button.play) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30rem;
+  }
+
   #board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-
     height: 100%;
     aspect-ratio: 1 / 1;
-
-    .cell {
-      background-color: transparent;
-      border: 25px solid white;
-      border-image: url(../img/chalkbox.webp) 30;
-      font-size: clamp(1rem, 8vw + 0.5rem, 5rem);
-    }
   }
 }
