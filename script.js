@@ -263,4 +263,6 @@ const ui = (() => {
       });
     });
   };
+
+  updateScreen();
 })();
