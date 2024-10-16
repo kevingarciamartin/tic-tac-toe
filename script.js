@@ -280,17 +280,17 @@ const ui = (() => {
     const playerOneInfo = document.createElement("article");
     const turnInfo = document.createElement("article");
     const playerTwoInfo = document.createElement("article");
-    const playerOneName = document.createElement("p");
-    const playerOnePoints = document.createElement("p");
-    const turnInfoTitle = document.createElement("p");
-    const turnPlayer = document.createElement("p");
-    const playerTwoName = document.createElement("p");
-    const playerTwoPoints = document.createElement("p");
+    const playerOneName = document.createElement("div");
+    const playerOnePoints = document.createElement("div");
+    const turnInfoTitle = document.createElement("div");
+    const turnPlayer = document.createElement("div");
+    const playerTwoName = document.createElement("div");
+    const playerTwoPoints = document.createElement("div");
 
     playerOneName.textContent = `${game.getPlayers()[0].name}`;
     playerOnePoints.textContent = `${game.getPlayers()[0].points}`;
     turnInfoTitle.textContent = "Now Playing";
-    turnPlayer.textContent = `${activePlayer.name}`;
+    turnPlayer.textContent = `${activePlayer.name}: ${activePlayer.marker}`;
     playerTwoName.textContent = `${game.getPlayers()[1].name}`;
     playerTwoPoints.textContent = `${game.getPlayers()[1].points}`;
 
