@@ -181,6 +181,11 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
       return;
     }
 
+    if (isWin(row, column)) {
+      increasePlayerPoints(getActivePlayer());
+      return;
+    } else if (isTie()) return;
+
     switchPlayerTurn();
   };
 
@@ -248,6 +253,8 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     playTurn,
     getActivePlayer,
     getPlayers,
+    isWin,
+    isTie,
   };
 })();
 
@@ -329,14 +336,58 @@ const ui = (() => {
     uiMainContent.appendChild(uiGameButtons);
   };
 
+  const renderModal = (message) => {
+    const modal = document.querySelector("dialog");
+    const modalMessage = document.createElement("p");
+    const modalButtons = document.createElement("div");
+    const modalPlayAgainButton = document.createElement("button");
+    const modalQuitButton = document.createElement("button");
+
+    modal.textContent = "";
+    modal.style.display = "grid";
+
+    modalMessage.textContent = message;
+
+    modalButtons.classList.add("modal-buttons");
+
+    modalPlayAgainButton.textContent = "Play Again";
+    modalPlayAgainButton.classList.add("quit");
+
+    modalQuitButton.textContent = "Quit";
+    modalQuitButton.classList.add("quit");
+
+    modal.appendChild(modalMessage);
+    modal.appendChild(modalButtons);
+    modalButtons.appendChild(modalPlayAgainButton);
+    modalButtons.appendChild(modalQuitButton);
+
+    modalPlayAgainButton.addEventListener("click", () => {
+      game.initRound();
+      renderGame();
+      modal.style.display = "none";
+    });
+
+    modalQuitButton.addEventListener("click", () => {
+      renderMainMenu();
+      modal.style.display = "none";
+    });
+  };
+
   uiMainContent.addEventListener("click", (event) => {
     if (event.target.classList.contains("play")) {
       game.initGame();
       game.initRound();
       renderGame();
     } else if (event.target.classList.contains("cell")) {
-      game.playTurn(event.target.dataset.row, event.target.dataset.column);
+      const row = event.target.dataset.row;
+      const column = event.target.dataset.column;
+      game.playTurn(row, column);
       renderGame();
+      if (game.isWin(row, column)) {
+        renderModal(`${game.getActivePlayer().name} is the winner!`);
+      } else if (game.isTie()) {
+        renderModal("It's a tie!");
+      }
     } else if (event.target.classList.contains("quit")) {
       renderMainMenu();
     }
