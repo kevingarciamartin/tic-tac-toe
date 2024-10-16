@@ -27,6 +27,7 @@ main {
       background-color: transparent;
       border: 25px solid white;
       border-image: url(../img/chalkbox.webp) 30;
+      font-size: 5rem;
     }
   }
 }
