@@ -51,7 +51,7 @@ const board = (() => {
 function Cell(cellRow, cellColumn) {
   const row = cellRow;
   const column = cellColumn;
-  const emptyCellValue = "_";
+  const emptyCellValue = "";
   let value = emptyCellValue;
 
   const placeMarker = (marker) => {
