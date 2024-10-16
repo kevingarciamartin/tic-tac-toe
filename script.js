@@ -105,6 +105,8 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
   };
   const getActivePlayer = () => activePlayer;
 
+  const getPlayers = () => players;
+
   const printNewRound = () => {
     console.log("--------------");
     console.log(`Round ${round}`);
@@ -245,6 +247,7 @@ const game = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
     playRound,
     playTurn,
     getActivePlayer,
+    getPlayers,
   };
 })();
 
@@ -272,7 +275,34 @@ const ui = (() => {
     const currentBoard = board.getBoard();
     const activePlayer = game.getActivePlayer();
 
-    uiInfo.textContent = `${activePlayer.name}'s turn...`;
+    uiInfo.id = "game-info";
+
+    const playerOneInfo = document.createElement("article");
+    const turnInfo = document.createElement("article");
+    const playerTwoInfo = document.createElement("article");
+    const playerOneName = document.createElement("p");
+    const playerOnePoints = document.createElement("p");
+    const turnInfoTitle = document.createElement("p");
+    const turnPlayer = document.createElement("p");
+    const playerTwoName = document.createElement("p");
+    const playerTwoPoints = document.createElement("p");
+
+    playerOneName.textContent = `${game.getPlayers()[0].name}`;
+    playerOnePoints.textContent = `${game.getPlayers()[0].points}`;
+    turnInfoTitle.textContent = "Now Playing";
+    turnPlayer.textContent = `${activePlayer.name}`;
+    playerTwoName.textContent = `${game.getPlayers()[1].name}`;
+    playerTwoPoints.textContent = `${game.getPlayers()[1].points}`;
+
+    uiInfo.appendChild(playerOneInfo);
+    uiInfo.appendChild(turnInfo);
+    uiInfo.appendChild(playerTwoInfo);
+    playerOneInfo.appendChild(playerOneName);
+    playerOneInfo.appendChild(playerOnePoints);
+    turnInfo.appendChild(turnInfoTitle);
+    turnInfo.appendChild(turnPlayer);
+    playerTwoInfo.appendChild(playerTwoName);
+    playerTwoInfo.appendChild(playerTwoPoints);
 
     uiBoard.id = "board";
 
@@ -307,7 +337,7 @@ const ui = (() => {
     } else if (event.target.classList.contains("cell")) {
       game.playTurn(event.target.dataset.row, event.target.dataset.column);
       renderGame();
-    } else if (event.target.classList.contains('quit')) {
+    } else if (event.target.classList.contains("quit")) {
       renderMainMenu();
     }
   });
